@@ -51,8 +51,16 @@ class LinkedList
   
   def pop
     return nil if @head.nil?
-    value = at(-1)
-    at(-2).next_node = nil
+    value = @tail
+    
+    if size == 1
+      @tail = nil
+      @head = nil
+    else
+      at(-2).next_node = nil
+      @tail = at(-1)
+    end
+    
     value
   end
   
@@ -138,7 +146,7 @@ capitals.insert_at(2, berlin)
 capitals.insert_at(5, stockholm)
 
 #p capitals.size
-#p capitals.at(-2)
+#p capitals.at(-1)
 #p capitals.pop
 #capitals.each { |obj| p obj }
 #p capitals.contains?("Berlin, Germany")
