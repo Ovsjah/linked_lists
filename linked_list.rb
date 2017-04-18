@@ -29,9 +29,9 @@ class LinkedList
   end
   
   def each
-    return nil if @head.nil?
-    
+    return nil if @head.nil?    
     data = @head
+    
     until data.nil?
       yield data
       data = data.next_node
@@ -44,6 +44,7 @@ class LinkedList
   
   def at(index)
     index = size - index.abs if index < 0
+    
     self.each_with_index do |obj, idx|
       return obj if idx == index
     end
@@ -70,33 +71,31 @@ class LinkedList
   
   def find(data)
     res = nil
+    
     self.each_with_index { |obj, idx| return idx if obj.value == data }
+    
     res
   end
   
   def insert_at(index, node)
     index = size - index.abs if index < 0
     
-    if @head.nil?
+    if @head.nil? || index == size
       append(node)
     elsif index == 0
-      node.next_node = @head
-      @head = node
-    elsif index == size
-      @tail.next_node = node
-      @tail = node
+      prepend(node)
     else
       prev = at(index - 1)
       node.next_node = prev.next_node
       prev.next_node = node
     end
+    
   rescue NoMethodError
     puts "Index is out of range!"
   end
     
   def remove_at(index)
-    return nil if @head.nil?
-    
+    return nil if @head.nil?    
     index = size - index.abs if index < 0
     
     if index == 0
@@ -107,7 +106,8 @@ class LinkedList
       @tail.next_node = nil
     else
       at(index - 1).next_node = at(index).next_node
-    end 
+    end
+    
   rescue NoMethodError
     puts "Index is out of range!"
   end
@@ -136,25 +136,30 @@ london = Node.new("London, England")
 paris = Node.new("Paris, France")
 berlin = Node.new("Berlin, Germany")
 stockholm = Node.new("Stockholm, Sweden")
+minsk = Node.new("Minsk, Belarus")
+warsaw = Node.new("Warsaw, Poland")
 
 capitals.append(kiev)
 capitals.prepend(madrid)
 capitals.append(london)
 capitals.append(paris)
 
-capitals.insert_at(2, berlin)
+capitals.insert_at(0, berlin)
 capitals.insert_at(5, stockholm)
+capitals.insert_at(0, minsk)
+capitals.insert_at(1, warsaw)
 
-#p capitals.size
-#p capitals.at(-1)
+p capitals.size
+#p capitals.at(-2)
+#p capitals
 #p capitals.pop
 #capitals.each { |obj| p obj }
-#p capitals.contains?("Berlin, Germany")
-#p capitals.find("Paris, France")
-#p capitals.to_s
-#p capitals
+#p capitals.contains?("Madrid, Spain")
+#p capitals.find("Berlin, Germany")
+p capitals.to_s
 #p capitals.head
 #p capitals.tail
+#capitals.remove_at(0)
 #capitals.remove_at(4)
 #capitals.remove_at(3)
 #capitals.remove_at(2)
